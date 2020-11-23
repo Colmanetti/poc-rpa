@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# reading test data and settings...
+echo "Enter test data (don't forget request.json file):"
+read -r -p "resourceId: " resourceId
+resourceId=${resourceId}
+read -r -p "stepId: " stepId
+stepId=${stepId}
+read -r -p "responseStrategy[0=callback,1=cache,default=callback]: " responseStrategy
+responseStrategy=${responseStrategy:-0}
+read -r -p "sleep[2]: " sleep
+sleep=${sleep:-2}
+
+# testing request manager
+echo "posting the request..."
+requestId=$(curl "http://localhost:8081/$resourceId/$stepId" -H "Content-Type: application/json" -d @request.json -s)
+echo "request posted. id=$requestId"
+echo "awaiting a while..."
+sleep "$sleep"
+echo "consuming request-command message..."
+jqFilter=". | select( .requestId == \"$requestId\")"
+kafkacat -q -s value=avro -r http://localhost:7998 -b localhost:9092 -e -C -t rpa-request-command | jq -c "$jqFilter" | jq '.'
+
+# testing resource manager
+echo "awaiting a while..."
+sleep "$sleep"
+echo "consuming response-event message. id=$requestId"
+jqFilter=". | select( .requestId == \"$requestId\")"
+kafkacat -q -s value=avro -r http://localhost:7998 -b localhost:9092 -e -C -t rpa-response-event | jq -c "$jqFilter" | jq '.'
+
+# testing response manager
+echo "awaiting a while..."
+sleep "$sleep"
+if [ "$responseStrategy" = 0 ]; then
+  echo "reading the rpa tool mock callback output..."
+  jq '.' < callback/"$requestId".json
+elif [ "$responseStrategy" = 1 ]; then
+  echo "querying the cache..."
+  docker exec redis redis-cli mget "$requestId" | jq '.'
+fi

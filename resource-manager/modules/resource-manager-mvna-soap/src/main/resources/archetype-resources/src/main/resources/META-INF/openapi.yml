@@ -1,0 +1,30 @@
+openapi: 3.0.1
+
+info:
+  title: <???>
+  description: <???>
+  version: <???>
+
+paths:
+  /health/live:
+    get:
+      tags:
+        - Health Check
+      responses:
+        '200':
+          description: 'Service is live!'
+        '500':
+          description: 'Could not check service health!'
+        '503':
+          description: 'Service is down!'
+  /health/ready:
+    get:
+      tags:
+        - Health Check
+      responses:
+        '200':
+          description: 'Service is ready!'
+        '500':
+          description: 'Could not check service health!'
+        '503':
+          description: 'Service is not ready!'

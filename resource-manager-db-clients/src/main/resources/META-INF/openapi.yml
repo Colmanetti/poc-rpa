@@ -1,0 +1,30 @@
+openapi: 3.0.1
+
+info:
+  title: rpa-resource-manager-db-clients
+  description: resource manager for the clients database
+  version: 1.0.0-SNAPSHOT
+
+paths:
+  /health/live:
+    get:
+      tags:
+        - Health Check
+      responses:
+        '200':
+          description: 'Service is live!'
+        '500':
+          description: 'Could not check service health!'
+        '503':
+          description: 'Service is down!'
+  /health/ready:
+    get:
+      tags:
+        - Health Check
+      responses:
+        '200':
+          description: 'Service is ready!'
+        '500':
+          description: 'Could not check service health!'
+        '503':
+          description: 'Service is not ready!'

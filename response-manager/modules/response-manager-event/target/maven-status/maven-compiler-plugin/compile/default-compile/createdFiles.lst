@@ -1,0 +1,3 @@
+br/com/vivo/rpa/response/ResponseEvent.class
+br/com/vivo/rpa/response/ResponseStrategy.class
+br/com/vivo/rpa/response/ResponseEvent$Builder.class

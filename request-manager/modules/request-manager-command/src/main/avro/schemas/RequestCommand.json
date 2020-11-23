@@ -1,0 +1,32 @@
+[
+  {
+    "name": "RequestCommand",
+    "namespace": "br.com.vivo.rpa.request",
+    "type": "record",
+    "fields": [
+      {
+        "name": "requestId",
+        "type": {
+          "type": "string",
+          "logicalType": "uuid"
+        }
+      },
+      {
+        "name": "resourceId",
+        "type": "string"
+      },
+      {
+        "name": "stepId",
+        "type": "string"
+      },
+      {
+        "name": "requestJson",
+        "type": [
+          "null",
+          "string"
+        ],
+        "default": null
+      }
+    ]
+  }
+]

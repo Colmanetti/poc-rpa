@@ -1,0 +1,31 @@
+[
+  {
+    "name": "ResponseEvent",
+    "namespace": "br.com.vivo.rpa.response",
+    "type": "record",
+    "fields": [
+      {
+        "name": "requestId",
+        "type": {
+          "type": "string",
+          "logicalType": "uuid"
+        }
+      },
+      {
+        "name": "responseJson",
+        "type": "string"
+      },
+      {
+        "name": "responseStrategy",
+        "type": {
+          "type": "enum",
+          "name": "br.com.vivo.rpa.response.ResponseStrategy",
+          "symbols": [
+            "CACHE",
+            "CALLBACK"
+          ]
+        }
+      }
+    ]
+  }
+]
